@@ -50,7 +50,7 @@ Thera hosts to serve PoC endpoints:
 *  [https://api.prometeus.io](https://api.prometeus.io) 
 * [ https://storage.prometeus.io]( https://storage.prometeus.io)
 
-First create DataValidator account in PoC enviroment
+First create DataValidation account in PoC environment
 
 ### Initialize DataValidator
 https://api.prometeus.io/init_data_validator
