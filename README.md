@@ -50,9 +50,9 @@ Thera hosts to serve PoC endpoints:
 *  [https://api.prometeus.io](https://api.prometeus.io) 
 * [ https://storage.prometeus.io]( https://storage.prometeus.io)
 
-First create DataValidation account in PoC environment
+First create DataValidator account in PoC enviroment
 
-### Initialize DataValidator
+### Initialize DataValidator endpoint
 https://api.prometeus.io/init_data_validator
 
 it returns new account related credentials with some coins on balance
@@ -65,7 +65,13 @@ it returns new account related credentials with some coins on balance
  "system_account": {"login": "login", "password": "password"}}
 ```
 
-### Initialize DataOwner
+Live demo
+
+```
+curl https://api.prometeus.io/init_data_validator
+```
+
+### Initialize DataOwner endpoint
 https://api.prometeus.io/init_data_owner
 
 - creates blokchain account for DataOwner and link it with DataValidator blokchain account
@@ -88,12 +94,24 @@ Returns
     "blockchain_account": {"account": "0x9e2c064cfb29017445ac2a9d61bd2aa1fd2dbbae", 
                            "identity": "CaeguhpOwchd86a_7JXBbBYtWg0JtS7oiTjR6lE7DJQ",
                            "private": "0xd649203af334415a04ab464356bd13b7d26d275456bf97b90549f51a03b3cf7e"},
-    "storage_url": "https://storage.prometeus.io/xxxxxx",
+    "storage_url": "https://storage.prometeus.io/9e2c064cfb29017445ac2a9d61bd2aa1fd2dbbae_9e2c064cfb29017445ac2a9d61bd2aa1fd2dbbae",
     "data_validator":  "0x9e2c064cfb29017445ac2a9d61bd2aa1fd2dbbae",
     "private_key": "3-j1I7hUZXgymbGL6wZysN_f-7rCfkD72fIDy8hMEE8=",
     "md5": "9a6d26641a37729b316df6b21412e73a"
 }
 ```
 
+Live demo
+
+```
+curl -H "Content-Type: application/json" --request POST --data '{"data":"xyzsdfsdfsfdsfdsf", "data_validator":"0xb19542ea90295401ed7558077d582b70f208bfba"}' https://api.prometeus.io/init_data_owner
+```
+
+### Build
+
+With docker compose
+```
+docker-compose up -d --build
+```
 
 
