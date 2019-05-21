@@ -1,0 +1,36 @@
+# For a quick start check out our HTTP Requests collection (Tools|HTTP Client|Open HTTP Requests Collection).
+#
+# Following HTTP Request Live Templates are available:
+# * 'gtrp' and 'gtr' create a GET request with or without query parameters;
+# * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
+# * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
+
+
+### init_data_validator
+GET http://127.0.0.1:4000/init_data_validator
+Content-Type: application/json
+
+### init_data_owner
+POST http://127.0.0.1:4000/init_data_owner
+Content-Type: application/json
+
+{
+  "data": "data owner data",
+  "data_validator": "0x12312313131233423442423"
+}
+
+### init_data_validator
+GET https://api.prometeus.io/init_data_validator
+Content-Type: application/json
+
+### init_data_owner
+POST https://api.prometeus.io/init_data_owner
+Content-Type: application/json
+
+{
+  "data": "data owner data",
+  "data_validator": "0x12312313131233423442423"
+}
+
+
+###
