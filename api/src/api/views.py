@@ -2,6 +2,7 @@
 import time
 import datetime
 import pytz
+import hashlib
 
 from django.conf import settings
 from django.shortcuts import get_object_or_404
@@ -66,12 +67,48 @@ class InitDataValidatorView(views.APIView):
 
                 ret['system_account'] = {'login':user.username, 'password':eth_account['account'].split('0x')[1] }
     
+        
+        return JsonResponse(ret)
 
+class InitDataOwner(views.APIView):
+    permission_classes = [ permissions.AllowAny]
+
+    def post(self, request, format=None):
+        ret = {}
+        if 'validator' in request.data.keys() and 'data' in request.data.keys():
+            is_valid = core.utils.eth_is_valid_address(web3_, request.data['validator'])
             
+            if is_valid:
+                
+                #-----------------------------------------------------------------------
+                # Encrypt DataOwner data received from DataValidator request
+                #-----------------------------------------------------------------------
+
+                encrypted = validator.utils.encrypt2(str(request.data['data']))
+                encrypted_body = encrypted['encrypted']
+                encrypted_private_key = encrypted['private_key']
+
+                blockchain_account = core.utils.eth_create_new_account(web3_, node)
+                encrypted_file_name = f"{blockchain_account['account'].split('0x')[1]}_{request.data['validator'].split('0x')[1]}".lower()
+                url_encrypted_file = f"http://storage.prometeus.io/{encrypted_file_name}"
+
+                newFile = open(f"../../storage/{encrypted_file_name}", "wb")
+                newFile.write(encrypted_body)
+                newFile.close()
+                
+                ret = {
+                        'blockchain_account': str(blockchain_account),
+                        'storage_url': str(url_encrypted_file),
+                        'validator':  str(request.data['validator']),
+                        'private_key': str(encrypted_private_key),
+                        'md5': hashlib.md5(encrypted_body).hexdigest()
+                    }
 
 
+            else:
+                ret = {'info': f"not valid blokchain address {request.data['validator']}", 'error_code':1002}
+                
+        else:
+            ret = {'info': 'not valid params', 'error_code':1001}
 
-        
-       
-        
         return JsonResponse(ret)
