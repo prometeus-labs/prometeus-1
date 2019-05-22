@@ -1,4 +1,5 @@
 /storage
+/swarm_data
 
 # Python
 __pycache__/

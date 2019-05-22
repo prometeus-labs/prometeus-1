@@ -7,3 +7,10 @@ services:
       - "4000:8080"
     volumes:
       - ./storage:/usr/src/app/storage
+  swarm:
+    image: ethdevops/swarm
+    environment:
+      DATADIR: /data
+      PASSWORD: ethProm001
+    volumes:
+      - ./swarm_data:/data
