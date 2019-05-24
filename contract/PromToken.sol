@@ -1,5 +1,4 @@
-//pragma solidity >=0.4.0 <0.7.0;
-pragma solidity >=0.4.0 <0.7.0;
+pragma solidity ^0.5.8;
 
 
 /**
@@ -255,6 +254,6 @@ contract PROMToken is StandardToken {
     constructor() public {
         totalSupply_ = INITIAL_SUPPLY;
         balances[msg.sender] = totalSupply_;
-        //emit Transfer(0x0, msg.sender, INITIAL_SUPPLY);
+        emit Transfer(0x0, msg.sender, INITIAL_SUPPLY);
     }
 }
