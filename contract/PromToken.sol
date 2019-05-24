@@ -259,6 +259,6 @@ contract PROMToken is StandardToken {
     constructor() public {
         totalSupply_ = INITIAL_SUPPLY;
         balances[msg.sender] = totalSupply_;
-        emit Transfer(0x0, msg.sender, INITIAL_SUPPLY);
+        emit Transfer(address(0), msg.sender, INITIAL_SUPPLY);
     }
 }
