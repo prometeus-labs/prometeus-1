@@ -13,8 +13,9 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os, sys
 from web3 import Web3, HTTPProvider, IPCProvider
 
-
-my_provider = IPCProvider("/node_data/geth.ipc")
+PROMETEUS_LIB_PATH = '../../lib/'
+NODE_PATH = '../../node/chaindata/'
+my_provider = IPCProvider(NODE_PATH+"geth.ipc")
 web3_ = Web3(my_provider)
 
 
@@ -29,9 +30,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '70d(dh0-0=%0c3u!3h%(8mk%o$8=bd+t^=_j@(q2mhxjybiz&c'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'api.prometeus.io', 'scanner.prometeus.io']
 
 
 # Application definition

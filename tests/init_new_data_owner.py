@@ -1,5 +1,5 @@
 import sys, uuid, secrets
-sys.path.insert(0, '..')
+sys.path.insert(0, '../lib/')
 
 import json, time
 import hashlib

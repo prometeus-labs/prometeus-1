@@ -2,7 +2,7 @@ import secrets
 import glob
 
 def eth_create_new_account(web3, keystore_path, password=None):
-        
+        ret = {}
         if not password:
                 password = secrets.token_urlsafe(32)  
                 password = password.split('0x')[0]
@@ -19,6 +19,8 @@ def eth_create_new_account(web3, keystore_path, password=None):
                 with open(keystore_file[0]) as keyfile:
                         encrypted_key = keyfile.read()
                         private_key = web3.eth.account.decrypt(encrypted_key, password)
-
-
-        return {'account': '0x'+account.lower(), 'identity': password, 'private': private_key.hex()}
+                
+                ret = {'account': '0x'+account.lower(), 'identity': password, 'private': private_key.hex()}
+        else:
+            ret = {'info': "Somthing went wrong"}
+        return ret

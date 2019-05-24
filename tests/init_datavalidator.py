@@ -1,5 +1,5 @@
 import sys
-sys.path.insert(0, '..')
+sys.path.insert(0, '../lib/')
 
 from web3 import Web3, HTTPProvider, IPCProvider
 import validator, core, time

@@ -11,15 +11,16 @@ from rest_framework import status, permissions, views
 
 from .models import (DataVAlidator, BlockChainAccount)
 
-from prometeus.settings import web3_
+from prometeus.settings import web3_, PROMETEUS_LIB_PATH, NODE_PATH
+
 
 import sys
-sys.path.insert(0,'../')
+sys.path.insert(0, PROMETEUS_LIB_PATH)
 
 import validator.utils
 import core.utils
 
-node = '/node_data/keystore'
+node = NODE_PATH + 'keystore'
 
 class InitDataValidatorView(views.APIView):
     permission_classes = [ permissions.AllowAny]

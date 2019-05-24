@@ -15,8 +15,7 @@ RUN pip3 install --no-cache-dir -r requirements.txt
 COPY . .
 RUN python3 -m venv .venv
 
-RUN echo "var prometeusOutput=`solc --optimize --combined-json abi,bin,interface ./contract/prometeus.sol`" > prometeus.js
-RUN echo "var promTokenOutput=`solc --optimize --combined-json abi,bin,interface ./contract/PromToken.sol`" > promtoken.js
+RUN echo "var promTokenOutput=`solc --optimize --combined-json abi,bin,interface ../lib/contract/PromToken.sol`" > promtoken.js
 
 EXPOSE 8080
 
