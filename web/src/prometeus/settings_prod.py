@@ -30,7 +30,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '70d(dh0-0=%0c3u!3h%(8mk%o$8=bd+t^=_j@(q2mhxjybiz&c'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['127.0.0.1', 'api.prometeus.io', 'scanner.prometeus.io']
 
