@@ -1,4 +1,5 @@
-pragma solidity ^0.5.8;
+pragma solidity 0.5.8;
+
 
 
 /**
@@ -87,6 +88,7 @@ contract BasicToken is ERC20Basic {
     * @param _value The amount to be transferred.
     */
     function transfer(address _to, uint256 _value) public returns (bool) {
+        require(_to != msg.sender);
         require(_to != address(0), "Address must not be zero.");
         require(_value <= balances[msg.sender], "There is no enough balance.");
 
@@ -151,7 +153,8 @@ contract StandardToken is ERC20, BasicToken {
     )
         public
         returns (bool)
-    {
+    {   
+        require(_to != msg.sender);
         require(_to != address(0), "Address must not be zero.");
         require(_value <= balances[_from], "There is no enough balance.");
         require(_value <= allowed[_from][msg.sender], "There is no enough allowed balance.");
@@ -173,6 +176,8 @@ contract StandardToken is ERC20, BasicToken {
     * @param _value The amount of tokens to be spent.
     */
     function approve(address _spender, uint256 _value) public returns (bool) {
+        require(_spender != msg.sender);
+        require((_value == 0) || (allowed[msg.sender][_spender] == 0));
         allowed[msg.sender][_spender] = _value;
         emit Approval(msg.sender, _spender, _value);
         return true;
