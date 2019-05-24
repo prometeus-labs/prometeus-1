@@ -1,4 +1,5 @@
 /storage
+/node_data
 
 # Python
 __pycache__/
