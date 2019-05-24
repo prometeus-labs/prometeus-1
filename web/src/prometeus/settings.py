@@ -11,12 +11,10 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os, sys
-sys.path.append('../../')
-
 from web3 import Web3, HTTPProvider, IPCProvider
 
 
-my_provider = IPCProvider("../../node/chaindata/geth.ipc")
+my_provider = IPCProvider("/node_data/geth.ipc")
 web3_ = Web3(my_provider)
 
 

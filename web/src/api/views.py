@@ -1,36 +1,26 @@
 
 import time
-import datetime
-import pytz
 import hashlib
 
 from django.conf import settings
 from django.shortcuts import get_object_or_404
-from django.db.models import Max
-from django.utils import timezone
-from django.utils.dateparse import parse_datetime
 from django.http import JsonResponse
 from django.contrib.auth.models import User
 
-from rest_framework.response import Response
 from rest_framework import status, permissions, views
-from rest_framework.generics import GenericAPIView
-from rest_framework.mixins import UpdateModelMixin
-from rest_framework.parsers import JSONParser
-from rest_framework.viewsets import ModelViewSet, ViewSet
 
-
-from .serializers import (DataVAlidatorSerializer)
 from .models import (DataVAlidator, BlockChainAccount)
 
 from prometeus.settings import web3_
+
 import sys
-sys.path.insert(0,'../../../')
+sys.path.insert(0,'../')
+
 import validator.utils
 import core.utils
 
-node = '../../node/chaindata/keystore'
-    
+node = '/node_data/keystore'
+
 class InitDataValidatorView(views.APIView):
     permission_classes = [ permissions.AllowAny]
 
@@ -38,7 +28,7 @@ class InitDataValidatorView(views.APIView):
         ret = {}
         user = request.user
         blockchain_account = request.GET.get('blockchain_account')
-        
+
         if blockchain_account:
             pass
         else:
@@ -58,16 +48,16 @@ class InitDataValidatorView(views.APIView):
             bca.save()
 
             if not user.is_authenticated:
-                
+
                 user = User.objects.create_user(username=eth_account['account'].split('0x')[1],
                                                 password=eth_account['account'].split('0x')[1])
-                
+
                 dv = DataVAlidator(blockchain_account=bca, system_account=user)
                 dv.save()
 
                 ret['system_account'] = {'login':user.username, 'password':eth_account['account'].split('0x')[1] }
-    
-        
+
+
         return JsonResponse(ret)
 
 class InitDataOwner(views.APIView):
@@ -77,14 +67,14 @@ class InitDataOwner(views.APIView):
         ret = {}
         if 'validator' in request.data.keys() and 'data' in request.data.keys():
             is_valid = core.utils.eth_is_valid_address(web3_, request.data['validator'])
-            
+
             if is_valid:
-                
+
                 #-----------------------------------------------------------------------
                 # Encrypt DataOwner data received from DataValidator request
                 #-----------------------------------------------------------------------
 
-                encrypted = validator.utils.encrypt2(str(request.data['data']))
+                encrypted = node.validator.utils.encrypt2(str(request.data['data']))
                 encrypted_body = encrypted['encrypted']
                 encrypted_private_key = encrypted['private_key']
 
@@ -92,10 +82,10 @@ class InitDataOwner(views.APIView):
                 encrypted_file_name = f"{blockchain_account['account'].split('0x')[1]}_{request.data['validator'].split('0x')[1]}".lower()
                 url_encrypted_file = f"http://storage.prometeus.io/{encrypted_file_name}"
 
-                newFile = open(f"../../storage/{encrypted_file_name}", "wb")
+                newFile = open(f"/storage/{encrypted_file_name}", "wb")
                 newFile.write(encrypted_body)
                 newFile.close()
-                
+
                 ret = {
                         'blockchain_account': str(blockchain_account),
                         'storage_url': str(url_encrypted_file),
@@ -107,7 +97,7 @@ class InitDataOwner(views.APIView):
 
             else:
                 ret = {'info': f"not valid blokchain address {request.data['validator']}", 'error_code':1002}
-                
+
         else:
             ret = {'info': 'not valid params', 'error_code':1001}
 

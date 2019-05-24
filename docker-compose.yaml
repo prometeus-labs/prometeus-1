@@ -1,9 +1,17 @@
 version: '2'
 services:
-  api:
-    build: .
+  node:
+    build: node
     restart: always
-    ports:
-      - "4000:8080"
     volumes:
-      - ./storage:/usr/src/app/storage
+      - ./node_data:/usr/src/app/chaindata
+  web:
+    build: web
+    restart: always
+    depends_on:
+      - node
+    ports:
+      - "4001:8000"
+    volumes:
+      - ./storage:/storage
+      - ./node_data:/node_data
