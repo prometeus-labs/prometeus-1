@@ -1,5 +1,5 @@
 import sys, uuid, secrets
-sys.path.insert(0, '..')
+sys.path.insert(0, '../lib/')
 
 import json, time
 import hashlib
@@ -15,7 +15,7 @@ web3 = Web3(my_provider)
 contract_address = eth_account_check_summ = web3.toChecksumAddress("0xc1d996fac7145df2f270dc5f1f200086c54e6c93")
 
 with open('contract.json', 'r') as abi_definition:
-        abi = json.load(abi_definition)['contracts']['../contract/prometeus.sol:Prometeus']['abi']
+        abi = json.load(abi_definition)['contracts']['../lib/contract/PromToken.sol:PROMToken']['abi']
 
 contract = web3.eth.contract(address = contract_address, abi=abi)
 
@@ -35,10 +35,9 @@ for i in event_logs:
 # print(event_log)
 
 
-#while True:
-        
-#        for event in contract_fiter.get_new_entries():
-#            print(event)
+while True:
+        for event in event_filter.get_new_entries():
+            print(event)
         #     block_hash = event.hex()
         #     block = web3.eth.getBlock(block_hash, full_transactions=True)
         #     transactions = block['transactions']
@@ -49,5 +48,5 @@ for i in event_logs:
             
            
             
-#        time.sleep(2)
+        time.sleep(2)
 

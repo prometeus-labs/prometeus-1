@@ -9,9 +9,9 @@ from django.contrib.auth.models import User
 
 from rest_framework import status, permissions, views
 
-from .models import (DataVAlidator, BlockChainAccount)
+from .models import (DataValidator, BlockChainAccount, DataOwner)
 
-from prometeus.settings import web3_, PROMETEUS_LIB_PATH, NODE_PATH
+from prometeus.settings import web3_, PROMETEUS_LIB_PATH, NODE_PATH, STORAGE_PATH
 
 
 import sys
@@ -29,7 +29,7 @@ class InitDataValidatorView(views.APIView):
         ret = {}
         user = request.user
         blockchain_account = request.GET.get('blockchain_account')
-
+      
         if blockchain_account:
             pass
         else:
@@ -53,12 +53,12 @@ class InitDataValidatorView(views.APIView):
                 user = User.objects.create_user(username=eth_account['account'].split('0x')[1],
                                                 password=eth_account['account'].split('0x')[1])
 
-                dv = DataVAlidator(blockchain_account=bca, system_account=user)
+                dv = DataValidator(blockchain_account=bca, system_account=user)
                 dv.save()
 
                 ret['system_account'] = {'login':user.username, 'password':eth_account['account'].split('0x')[1] }
 
-
+     
         return JsonResponse(ret)
 
 class InitDataOwner(views.APIView):
@@ -75,15 +75,18 @@ class InitDataOwner(views.APIView):
                 # Encrypt DataOwner data received from DataValidator request
                 #-----------------------------------------------------------------------
 
-                encrypted = node.validator.utils.encrypt2(str(request.data['data']))
+                encrypted = validator.utils.encrypt2(str(request.data['data']))
                 encrypted_body = encrypted['encrypted']
                 encrypted_private_key = encrypted['private_key']
 
                 blockchain_account = core.utils.eth_create_new_account(web3_, node)
+                do_acc = BlockChainAccount(address = blockchain_account['account'])
+                do_acc.save()
+
                 encrypted_file_name = f"{blockchain_account['account'].split('0x')[1]}_{request.data['validator'].split('0x')[1]}".lower()
                 url_encrypted_file = f"http://storage.prometeus.io/{encrypted_file_name}"
 
-                newFile = open(f"/storage/{encrypted_file_name}", "wb")
+                newFile = open(f"{STORAGE_PATH}{encrypted_file_name}", "wb")
                 newFile.write(encrypted_body)
                 newFile.close()
 
@@ -95,7 +98,13 @@ class InitDataOwner(views.APIView):
                         'md5': hashlib.md5(encrypted_body).hexdigest()
                     }
 
+                dv = DataValidator.objects.get(blockchain_account__address = request.data['validator'])                
+                do = DataOwner(blockchain_account =  do_acc )
+                do.save()
+                dv.data_owner.add(do)
 
+                print(do.blockchain_account.address)
+                
             else:
                 ret = {'info': f"not valid blokchain address {request.data['validator']}", 'error_code':1002}
 

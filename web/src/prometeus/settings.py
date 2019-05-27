@@ -18,6 +18,7 @@ NODE_PATH = '../../node/chaindata/'
 my_provider = IPCProvider(NODE_PATH+"geth.ipc")
 web3_ = Web3(my_provider)
 
+STORAGE_PATH = '../../storage/'
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
