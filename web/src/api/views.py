@@ -9,7 +9,7 @@ from django.contrib.auth.models import User
 
 from rest_framework import status, permissions, views
 
-from .models import (DataValidator, BlockChainAccount, DataOwner)
+from .models import (DataValidator, BlockChainAccount, DataOwner, DataMart)
 
 from prometeus.settings import web3_, PROMETEUS_LIB_PATH, NODE_PATH, STORAGE_PATH
 
@@ -26,9 +26,11 @@ class InitDataValidatorView(views.APIView):
     permission_classes = [ permissions.AllowAny]
 
     def get(self, request, format=None):
+        acc_types = ['mart', 'owner', 'validator']
         ret = {}
         user = request.user
         blockchain_account = request.GET.get('blockchain_account')
+        account_type = request.GET.get('type')
       
         if blockchain_account:
             pass
@@ -50,13 +52,24 @@ class InitDataValidatorView(views.APIView):
 
             if not user.is_authenticated:
 
-                user = User.objects.create_user(username=eth_account['account'].split('0x')[1],
-                                                password=eth_account['account'].split('0x')[1])
+                if account_type and account_type in acc_types:
+                    user = User.objects.create_user(username=eth_account['account'].split('0x')[1],
+                                                    password=eth_account['account'].split('0x')[1])
+                    user.save()
+                                        
+                    if account_type == 'mart':
+                        dv = DataMart(blockchain_account=bca, system_account=user)
+                        dv.save()
+                    elif account_type == 'validator':
+                        dv = DataValidator(blockchain_account=bca, system_account=user)
+                        dv.save()
+                    elif account_type == 'owner':
+                        dv = DataOwner(blockchain_account=bca, system_account=user)
+                        dv.save()
 
-                dv = DataValidator(blockchain_account=bca, system_account=user)
-                dv.save()
-
-                ret['system_account'] = {'login':user.username, 'password':eth_account['account'].split('0x')[1] }
+                    ret['system_account'] = {'login':user.username, 'password':eth_account['account'].split('0x')[1] }
+                else:
+                    ret = {'info': f"no account type {acc_types} has specified", "error_code":1004}
 
      
         return JsonResponse(ret)
@@ -112,3 +125,43 @@ class InitDataOwner(views.APIView):
             ret = {'info': 'not valid params', 'error_code':1001}
 
         return JsonResponse(ret)
+
+
+class Scanner(views.APIView):
+    permission_classes = [ permissions.AllowAny]
+    
+    def get(self, request, format=None):
+        ret = {}
+
+        user = request.user
+        blockchain_address = request.GET.get('blockchain_address')
+        
+
+        blockchain_account = BlockChainAccount.objects.filter(address = blockchain_address).first()
+
+        print(blockchain_account)
+
+        if blockchain_account:
+            addrss_types = [DataMart, DataValidator, DataOwner]
+            for i in addrss_types:
+                account = i.objects.filter(blockchain_account = blockchain_account).first()
+                if account:
+                    account_type = None
+                    if type(account) == DataOwner:
+                        ret['blockchain_address'] = account.blockchain_account.address
+                        ret['type'] = 'data_owner'
+                        ret['updated'] = account.updated
+                        ret['storage'] = account.storage
+                        ret['storage_md5'] = account.storage_md5
+                        validator = DataValidator.objects.filter(data_owner=account).first()
+                        ret['validator'] = validator.blockchain_account.address
+                    
+                    elif type(account) == DataValidator:
+                        account_type = 'data_validator'
+                    elif type(account) == DataMart:
+                        account_type = 'data_mart'
+        else:
+            ret = {'info': 'not a valid address in Prometeus network', 'error_code':1003}
+
+        return JsonResponse(ret)
+
