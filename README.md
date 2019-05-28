@@ -53,7 +53,7 @@ Thera hosts to serve PoC endpoints:
 First create DataValidator account in PoC enviroment
 
 ### Initialize DataValidator endpoint
-https://api.prometeus.io/init_validator
+https://api.prometeus.io/create_account/?type=validator
 
 it returns new account related credentials with some coins on balance
 
