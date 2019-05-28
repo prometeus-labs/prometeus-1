@@ -105,14 +105,16 @@ class InitDataOwner(views.APIView):
 
                 ret = {
                         'blockchain_account': str(blockchain_account),
-                        'storage_url': str(url_encrypted_file),
+                        'storage': str(url_encrypted_file),
                         'validator':  str(request.data['validator']),
                         'private_key': str(encrypted_private_key),
-                        'md5': hashlib.md5(encrypted_body).hexdigest()
+                        'storage_md5': hashlib.md5(encrypted_body).hexdigest()
                     }
 
                 dv = DataValidator.objects.get(blockchain_account__address = request.data['validator'])                
-                do = DataOwner(blockchain_account =  do_acc )
+                do = DataOwner(blockchain_account =  do_acc,
+                              storage = ret['storage'],
+                              storage_md5 = ret['storage_md5'])
                 do.save()
                 dv.data_owner.add(do)
 
@@ -157,9 +159,13 @@ class Scanner(views.APIView):
                         ret['validator'] = validator.blockchain_account.address
                     
                     elif type(account) == DataValidator:
-                        account_type = 'data_validator'
+                        ret['blockchain_address'] = account.blockchain_account.address
+                        ret['type'] = 'data_validator'
+                        ret['data_owners'] = [i.blockchain_account.address for i in  account.data_owner.all() ]
+
                     elif type(account) == DataMart:
-                        account_type = 'data_mart'
+                        ret['blockchain_address'] = account.blockchain_account.address
+                        ret['type'] = 'data_mart'
         else:
             ret = {'info': 'not a valid address in Prometeus network', 'error_code':1003}
 
