@@ -256,9 +256,22 @@ contract PROMToken is StandardToken {
     uint8 public decimals = 18;
     uint256 public INITIAL_SUPPLY = 20000000  * 10 ** uint256(decimals);
 
+    event LinkValidatorOwner(address indexed _validator, address indexed _owner);
+
     constructor() public {
         totalSupply_ = INITIAL_SUPPLY;
         balances[msg.sender] = totalSupply_;
         emit Transfer(address(0), msg.sender, INITIAL_SUPPLY);
     }
+
+    function link_validator_owner(
+        address _owner
+    ) public returns (bool)
+    {
+        require(msg.sender != _owner);
+        emit LinkValidatorOwner(msg.sender, _owner);
+        return true;
+    }
+
+
 }

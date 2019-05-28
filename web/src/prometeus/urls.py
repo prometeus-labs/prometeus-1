@@ -16,11 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from api.views import InitDataValidatorView, InitDataOwner
+from api.views import InitDataValidatorView, InitDataOwner, Scanner
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('init_validator/', InitDataValidatorView.as_view()),
-    path('init_owner/', InitDataOwner.as_view())
+    path('create_account/', InitDataValidatorView.as_view()),
+    path('init_owner/', InitDataOwner.as_view()),
+    path('scanner/', Scanner.as_view())
 ]
