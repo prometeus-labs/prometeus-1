@@ -130,7 +130,7 @@ curl -H "Content-Type: application/json" --request POST --data '{"data":"xyzsdfs
 To find relatedt to Prometeus account data 
 
 ```
-curl http://127.0.0.1:8000/scanner/?blockchain_address=0x60a7e2a4080c91662f4b85245edce83736797013
+curl http://api.prometeus.io/scanner/?blockchain_address=0x60a7e2a4080c91662f4b85245edce83736797013
 ```
 
 returns json like
