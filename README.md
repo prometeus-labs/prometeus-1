@@ -70,7 +70,9 @@ Thera hosts to serve PoC endpoints:
 First create DataValidator account in PoC enviroment
 
 ### Initialize DataValidator endpoint
+
 https://api.prometeus.io/create_account/?type=validator
+
 
 it returns new account related credentials with some coins on balance
 
@@ -90,7 +92,7 @@ curl https://api.prometeus.io/create_account/?type=mart
 ```
 
 ### Initialize DataOwner endpoint
-https://api.prometeus.io/init_owner
+https://api.prometeus.io/init_data_owner
 
 - creates blokchain account for DataOwner and link it with DataValidator blokchain account
 - map DataValidator->DataOwner is stored in smart contract
@@ -122,7 +124,7 @@ Returns
 Live demo
 
 ```
-curl -H "Content-Type: application/json" --request POST --data '{"data":"xyzsdfsdfsfdsfdsf", "validator":"0xb19542ea90295401ed7558077d582b70f208bfba"}' https://api.prometeus.io/init_owner
+curl -H "Content-Type: application/json" --request POST --data '{"data":"xyzsdfsdfsfdsfdsf", "data_validator":"0xb19542ea90295401ed7558077d582b70f208bfba"}' https://api.prometeus.io/init_data_owner
 ```
 
 ### Scanner
