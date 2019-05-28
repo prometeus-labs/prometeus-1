@@ -1,4 +1,4 @@
-# Quick start
+# Prometeus PoC Quick start
 
 ## Install dependencies
 
@@ -41,7 +41,24 @@ cd ../tests
 python transactions.py
 ``` 
 
-## PoC endpoints using
+Tu run local endpoint 
+
+## Install and run own endpoint
+
+```
+cd web/src
+./manage.py makemigrations
+./manage.py migrate
+./manage.py runserver
+```
+
+Then test local endpoint
+
+```
+curl http://127.0.0.1:8000/create_account/?type=validator
+```
+
+## Using Prometeus PoC live endpoint
 
 The system has deployed with local dev geth node and have no any transactions with main blockchain.
 Thera hosts to serve PoC endpoints:
@@ -68,7 +85,8 @@ it returns new account related credentials with some coins on balance
 Live demo
 
 ```
-curl https://api.prometeus.io/init_validator
+curl https://api.prometeus.io/create_account/?type=validator
+curl https://api.prometeus.io/create_account/?type=mart
 ```
 
 ### Initialize DataOwner endpoint
@@ -105,6 +123,25 @@ Live demo
 
 ```
 curl -H "Content-Type: application/json" --request POST --data '{"data":"xyzsdfsdfsfdsfdsf", "validator":"0xb19542ea90295401ed7558077d582b70f208bfba"}' https://api.prometeus.io/init_owner
+```
+
+### Scanner
+
+To find relatedt to Prometeus account data 
+
+```
+curl http://127.0.0.1:8000/scanner/?blockchain_address=0x60a7e2a4080c91662f4b85245edce83736797013
+```
+
+returns json like
+
+```json
+{"blockchain_address": "0x60a7e2a4080c91662f4b85245edce83736797013", 
+ "type": "data_owner", 
+ "updated": "2019-05-28T04:42:23.801Z", 
+ "storage": null, 
+ "storage_md5": null, 
+ "validator": "0xa3fea70386bd87ede44a6d6d2bff874ce09b9596"}
 ```
 
 ### Build
