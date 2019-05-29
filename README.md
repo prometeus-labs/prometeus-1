@@ -145,12 +145,3 @@ returns json like
  "storage_md5": null, 
  "validator": "0xa3fea70386bd87ede44a6d6d2bff874ce09b9596"}
 ```
-
-### Build
-
-With docker compose
-```
-docker-compose up -d --build
-```
-
-
