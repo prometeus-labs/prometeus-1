@@ -23,13 +23,13 @@ Content-Type: application/json
 GET https://api.prometeus.io/init_data_validator
 Content-Type: application/json
 
-### init_data_owner
-POST https://api.prometeus.io/init_data_owner
+### init_owner
+POST https://api.prometeus.io/init_owner/
 Content-Type: application/json
 
 {
   "data": "data owner data",
-  "data_validator": "0x12312313131233423442423"
+  "validator": "0xb8ff71977b232cb163ba3f54a56a79181b05f53f"
 }
 
 
