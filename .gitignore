@@ -1,5 +1,7 @@
 /storage
-/node_data
+/chaindata
+/ipfs_data
+/storage
 
 # Python
 __pycache__/

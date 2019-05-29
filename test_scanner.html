@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Prometeus :: Test scanner</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="//stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+  <style type="text/css">
+
+    body {
+      font-size: 10pt;
+    }
+
+    h1 {
+      font-size: 1.4rem;
+      padding: 0;
+      margin: 0;
+    }
+
+    header {
+      background: #eee;
+      border-bottom: 1px solid #ddd;
+      padding: 20px 50px;
+      margin-bottom: 20px;
+    }
+
+    form {
+      margin: 0 auto;
+    }
+
+    form > .input-group {
+      flex: 1;
+    }
+
+    #blockchain_address {
+      width: 500px;
+    }
+
+    #result {
+
+      margin: 20px 0 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    #result li {
+      border-bottom: 1px solid #ddd;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+    }
+
+    #result li:first-child {
+      border-top: 1px solid #ddd;
+    }
+
+    #result li b, #result li span {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      user-select: all;
+    }
+
+    #result li b {
+      font-weight: 500;
+      display: inline-block;
+      width: 150px;
+      margin-right: 10px;
+    }
+
+    #result li span {
+
+    }
+  </style>
+
+</head>
+<body>
+<header>
+  <h1>Prometeus.io - scanner</h1>
+</header>
+
+<main>
+  <div class="container">
+    <form class="form-inline" id="scannerForm">
+      <div class="input-group mb-2">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Blockchain address:</span>
+        </div>
+        <input type="text" class="form-control" placeholder="Enter blockchain address" autofocus
+               id="blockchain_address" autocomplete="off">
+      </div>
+      <div class="input-group-append">
+        <button type="submit" class="btn btn-primary mb-2">Send</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="container">
+    <ul class="result-list hide" id="result"></ul>
+    <div class="alert alert-danger fade" role="alert" id="alertBlock">
+    </div>
+  </div>
+
+
+</main>
+
+<script
+    src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+    crossorigin="anonymous"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="//stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+<script src="//cdn.jsdelivr.net/npm/lodash"></script>
+
+<script type="text/javascript">
+  $(function () {
+
+    function getFormattedValue(value) {
+      var eValue = document.createElement('span');
+
+      eValue.title = value;
+
+      if (_.isArray(value)) {
+        eValue.innerHTML = '[ ' + _.join(value, ', ') + ' ]';
+      } else if (_.isObject(value)) {
+        var list = document.createElement('ul');
+        _.forEach(value, function (val, key) {
+          $(list).append(getListItemByItem(val, key));
+        });
+        eValue.append(list);
+      } else {
+        eValue.innerHTML = value.toString();
+      }
+      return eValue;
+    }
+
+    function getListItemByItem(value, key) {
+      var elist = document.createElement('li');
+
+      var eKey = document.createElement('b');
+
+      key = _.startCase(key);
+      eKey.title = key;
+      eKey.innerHTML = key;
+
+      elist.appendChild(eKey);
+
+      elist.appendChild(getFormattedValue(value));
+
+      return $(elist);
+    }
+
+    function onDataReceive(data) {
+      console.log(data);
+      if (data.error_code) {
+        showAlert('Error (' + data.error_code + '): ' + data.info);
+        return;
+      }
+      $('#result').empty();
+
+      _.forEach(data, function (value, key) {
+        $('#result').append(getListItemByItem(value, key));
+      });
+
+      $('#result')
+        .show();
+    }
+
+    function onLoading(isLoading) {
+      $('#scannerForm input').attr('disabled', isLoading);
+
+      $('#scannerForm button')
+        .attr('disabled', isLoading)
+        .text(isLoading ? 'Loading...' : 'Send');
+    }
+
+    function showAlert(msg) {
+      if (msg === false) {
+        $('#alertBlock').hide();
+        return;
+      }
+
+      $('#alertBlock')
+        .text(msg)
+        .addClass('show')
+        .show()
+        .alert();
+    }
+
+    $('#scannerForm')
+      .on('submit', function (e) {
+        e.preventDefault();
+        showAlert(false);
+        $('#result').hide();
+
+
+        $.get('https://api.prometeus.io/scanner/', {blockchain_address: $('#blockchain_address').val()})
+          .done(onDataReceive)
+          .fail(function () {
+            showAlert('Error');
+          })
+          .always(function () {
+            onLoading(false);
+          });
+        onLoading(true);
+      })
+      .on('click', function (e) {
+        e.target.select && e.target.select();
+      });
+  })
+  ;
+</script>
+</body>
+</html>

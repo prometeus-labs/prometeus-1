@@ -17,10 +17,12 @@ COPY requirements.txt ./
 
 RUN pip3 install --no-cache-dir -r requirements.txt
 
-COPY . .
+COPY lib lib
+COPY node node
+COPY tests tests
 
-WORKDIR /usr/src/app/web/src
+WORKDIR /usr/src/app/node
 
-RUN ./manage.py migrate
+RUN echo "var promTokenOutput=`solc --optimize --combined-json abi,bin,interface ../lib/contract/PromToken.sol`" > promtoken.js
 
-CMD [ "./manage.py", "runserver", "0.0.0.0:8000" ]
+CMD geth --dev --datadir chaindata/ --minerthreads 1 --preload "init.js"
