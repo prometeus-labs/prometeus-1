@@ -15,7 +15,7 @@ def send_file_to_ipfs(file_name):
         result = json.loads(r.content.decode('utf8').split('\n')[1])
         file_hash = result['Hash']
 
-        request = f'arg=/ipfs/{file_hash}&arg=/{file_name}&stream-channels=true'
+        request = f'arg=/ipfs/{file_hash}&arg=/{file_hash}&stream-channels=true'
 
         cp_url = ipfs_server_name + f'/api/v0/files/cp?' + request
         r = requests.post(cp_url)
@@ -28,8 +28,8 @@ def send_file_to_ipfs(file_name):
         }
 
 
-def get_file_from_ipfs(name):
-    url = ipfs_server_name + f'/api/v0/files/read?arg=/{name}&stream-channels=true'
+def get_file_from_ipfs(hash):
+    url = ipfs_server_name + f'/api/v0/files/read?arg=/{hash}&stream-channels=true'
     r = requests.get(url)
     if r.status_code != 200:
         raise Exception(r.content)
@@ -38,7 +38,8 @@ def get_file_from_ipfs(name):
 try:
     data = send_file_to_ipfs('ipfs_test_file.txt')
     print("File is uploading: ", data["hash"])
-    print(get_file_from_ipfs(data['name']))
+    print(get_file_from_ipfs(data['hash']))
 
 except Exception as e:
     print(str(e))
+

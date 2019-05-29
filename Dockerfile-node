@@ -19,7 +19,7 @@ RUN pip3 install --no-cache-dir -r requirements.txt
 
 COPY lib lib
 COPY node node
-#COPY tests tests
+COPY tests tests
 
 WORKDIR /usr/src/app/node
 
