@@ -7,7 +7,7 @@ sudo add-apt-repository -y ppa:ethereum/ethereum
 sudo apt-get update
 sudo apt-get install ethereum solc
 
-git clone git@gitlab.com:prometeus_/prometeus.git
+git clone git@github.com:prometeus-labs/prometeus.git
 cd prometeus
 
 python3 -m venv .venv
@@ -92,7 +92,7 @@ curl https://api.prometeus.io/create_account/?type=mart
 ```
 
 ### Initialize DataOwner endpoint
-https://api.prometeus.io/init_data_owner
+https://api.prometeus.io/init_owner
 
 - creates blokchain account for DataOwner and link it with DataValidator blokchain account
 - map DataValidator->DataOwner is stored in smart contract
