@@ -83,8 +83,8 @@ Method returns structure like
 ```
 where
 
-* * blockchain_account * * - is a new Validator account in a blockcahin
-* *system_account * * - system user and password to login into webservice http://127.0.0.1:8000
+_ _blockchain_account _ _ - is a new Validator account in a blockcahin
+_ _system_account _ _ - system user and password to login into webservice http://127.0.0.1:8000
 
 To create new Owner under Validator
 
