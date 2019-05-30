@@ -130,6 +130,19 @@ Returns
 ```
 where params meaning is:
 
+*blockchain_account* - new Owner blockchain account with all credentials
+
+*storage_url* - encrypted file location
+
+*private_key* - key to decrypt
+
+*md5* - chack summ of encrypted file
+
+*validator* - is a createor for data Owner
+
+
+
+
 
 
 
