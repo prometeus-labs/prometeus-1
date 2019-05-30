@@ -81,13 +81,13 @@ Method returns structure like
                         "balance": 1000000000000000000}, 
  "system_account": {"login": "login", "password": "password"}}
 ```
-where
+where params meaning is:
 
-*blockchain_account* - is a new Validator account in a blockcahin
+*blockchain_account* - is a new **Validator** account in a blockcahin
 
 *system_account* - system user and password to login into webservice http://127.0.0.1:8000
 
-Initializing data Owner call API POST method */init_owner*
+To initializing data **Owner** call API POST method */init_owner*
 
 ```
 curl -H "Content-Type: application/json" --request POST --data '{"data":"xyzsdfsdfsfdsfdsf", "data_validator":"0xb19542ea90295401ed7558077d582b70f208bfba"}' http://127.0.0.1:8000/init_owner
@@ -101,6 +101,11 @@ Params
     "validator": "0x9e2c064cfb29017445ac2a9d61bd2aa1fd2dbbae"
 }
 ```
+
+where params meaning is:
+
+*data* - **Owner** ralated data to be enctypted
+*validator* - is a **Validator** address new created **Owner** will be belonging to
 
 Method will process data with bellow flow
 
@@ -122,6 +127,7 @@ Returns
     "md5": "9a6d26641a37729b316df6b21412e73a"
 }
 ```
+where params meaning is:
 
 
 
