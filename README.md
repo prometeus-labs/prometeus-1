@@ -59,7 +59,7 @@ There are three roles Mart, Validator and Owner in the system. Bellow roles acti
 
 ### DataValidator
 
-Init new Validator just after bringing up dev node and endpoints, 
+To act as Validator role init new Validator account first just after bringing up dev node and endpoints
 
 ```
 curl http://127.0.0.1:8000/create_account/?type=validator
