@@ -105,6 +105,7 @@ Params
 where params meaning is:
 
 *data* - **Owner** ralated data to be enctypted
+
 *validator* - is a **Validator** address new created **Owner** will be belonging to
 
 Method will process data with bellow flow
