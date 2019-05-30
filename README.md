@@ -59,7 +59,7 @@ There are three roles Mart, Validator and Owner in the system. Bellow roles acti
 
 ### DataValidator
 
-To act as Validator role init new Validator account first just after bringing up dev node and endpoints
+To act as Validator role init new Validator account first just after bringing up dev node and endpoints. You are able to create many Validators as you like by call API method:
 
 ```
 curl http://127.0.0.1:8000/create_account/?type=validator
@@ -76,8 +76,10 @@ Method returns structure like
 ```
 where
 
-* *blockchain_account* * - is a new Validator account in a blockcahin
-* *system_account* * - system user and password to login into webservice http://127.0.0.1:8000
+* * blockchain_account * * - is a new Validator account in a blockcahin
+* *system_account * * - system user and password to login into webservice http://127.0.0.1:8000
+
+To create new Owner under Validator
 
 
 ## Using Prometeus PoC live endpoint
