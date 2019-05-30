@@ -92,30 +92,20 @@ To create new Owner under Validator
 ## Using Prometeus PoC live endpoint
 
 The system has deployed with local dev geth node and have no any transactions with main blockchain.
-Thera hosts to serve PoC endpoints:
+
 
 
 *  [https://api.prometeus.io](https://api.prometeus.io) 
 * [ https://storage.prometeus.io]( https://storage.prometeus.io)
-
-First create DataValidator account in PoC enviroment
-
-### Initialize DataValidator endpoint
-
-https://api.prometeus.io/create_account/?type=validator
+* [ https://scanner.prometeus.io]( https://scanner.prometeus.io)
 
 
-it returns new account related credentials with some coins on balance
+### Using API endpoint
 
-```json
-{"blockchain_account": {"account": "0x9e2c064cfb29017445ac2a9d61bd2aa1fd2dbbae", 
-                        "identity": "Npo9yyg9Kh2Eb1eog6dwimNRG6Ob9vOmja4KZdFWhs4", 
-                        "private": "0xa060f56f7cd0c2462f0db8f94f38adf320690f5fe9ba9f941888e097aec5f81c",
-                        "balance": 1000000000000000000}, 
- "system_account": {"login": "login", "password": "password"}}
-```
+[https://api.prometeus.io](https://api.prometeus.io) usage is the same as described in above chapter 'Prometeus roles'.
+It aims to play any roles like Mart, Validator or Owner
 
-Live demo
+Some ideas how to use live dev demo
 
 ```
 curl https://api.prometeus.io/create_account/?type=validator
