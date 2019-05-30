@@ -87,7 +87,43 @@ where
 
 *system_account* - system user and password to login into webservice http://127.0.0.1:8000
 
-To create new Owner under Validator
+Initializing data Owner call API POST method */init_owner*
+
+```
+curl -H "Content-Type: application/json" --request POST --data '{"data":"xyzsdfsdfsfdsfdsf", "data_validator":"0xb19542ea90295401ed7558077d582b70f208bfba"}' http://127.0.0.1:8000/init_owner
+```
+
+Params
+
+```json
+{
+    "data":"DataOwner data to store",
+    "validator": "0x9e2c064cfb29017445ac2a9d61bd2aa1fd2dbbae"
+}
+```
+
+Method will process data with bellow flow
+
+- creates blokchain account for data Owner and link it with Validator blokchain account
+- maps Validator->Owner and store mapping in blockcahin and local DB
+- encrypt data Owner data set and save file to the store
+
+Returns
+
+
+```json
+{
+    "blockchain_account": {"account": "0x9e2c064cfb29017445ac2a9d61bd2aa1fd2dbbae", 
+                           "identity": "CaeguhpOwchd86a_7JXBbBYtWg0JtS7oiTjR6lE7DJQ",
+                           "private": "0xd649203af334415a04ab464356bd13b7d26d275456bf97b90549f51a03b3cf7e"},
+    "storage_url": "https://storage.prometeus.io/9e2c064cfb29017445ac2a9d61bd2aa1fd2dbbae_9e2c064cfb29017445ac2a9d61bd2aa1fd2dbbae",
+    "validator":  "0x9e2c064cfb29017445ac2a9d61bd2aa1fd2dbbae",
+    "private_key": "3-j1I7hUZXgymbGL6wZysN_f-7rCfkD72fIDy8hMEE8=",
+    "md5": "9a6d26641a37729b316df6b21412e73a"
+}
+```
+
+
 
 
 ## Using Prometeus PoC live endpoint
@@ -106,58 +142,25 @@ The system has deployed with local dev geth node and have no any transactions wi
 [https://api.prometeus.io](https://api.prometeus.io) usage is the same as described in above chapter 'Prometeus roles'.
 It aims to play any roles like Mart, Validator or Owner
 
-Some ideas how to use live dev demo
+Some ideas how to use live dev demo. Create accounts:
 
 ```
 curl https://api.prometeus.io/create_account/?type=validator
 curl https://api.prometeus.io/create_account/?type=mart
 ```
-
-### Initialize DataOwner endpoint
-https://api.prometeus.io/init_owner
-
-- creates blokchain account for DataOwner and link it with DataValidator blokchain account
-- map DataValidator->DataOwner is stored in smart contract
-- encrypt DataOwner data set and save file to the store
-
-Params
-
-```json
-{
-    "data":"DataOwner data to store",
-    "validator": "0x9e2c064cfb29017445ac2a9d61bd2aa1fd2dbbae"
-}
-```
-
-Returns
-
-```json
-{
-    "blockchain_account": {"account": "0x9e2c064cfb29017445ac2a9d61bd2aa1fd2dbbae", 
-                           "identity": "CaeguhpOwchd86a_7JXBbBYtWg0JtS7oiTjR6lE7DJQ",
-                           "private": "0xd649203af334415a04ab464356bd13b7d26d275456bf97b90549f51a03b3cf7e"},
-    "storage_url": "https://storage.prometeus.io/9e2c064cfb29017445ac2a9d61bd2aa1fd2dbbae_9e2c064cfb29017445ac2a9d61bd2aa1fd2dbbae",
-    "validator":  "0x9e2c064cfb29017445ac2a9d61bd2aa1fd2dbbae",
-    "private_key": "3-j1I7hUZXgymbGL6wZysN_f-7rCfkD72fIDy8hMEE8=",
-    "md5": "9a6d26641a37729b316df6b21412e73a"
-}
-```
-
-Live demo
+Initialize data Owner
 
 ```
 curl -H "Content-Type: application/json" --request POST --data '{"data":"xyzsdfsdfsfdsfdsf", "data_validator":"0xb19542ea90295401ed7558077d582b70f208bfba"}' https://api.prometeus.io/init_owner
 ```
 
-### Scanner
-
-To find relatedt to Prometeus account data 
+To obtain relatedt to Prometeus account data 
 
 ```
 curl http://api.prometeus.io/scanner/?blockchain_address=0x60a7e2a4080c91662f4b85245edce83736797013
 ```
 
-returns json like
+returns json structure like
 
 ```json
 {"blockchain_address": "0x60a7e2a4080c91662f4b85245edce83736797013", 
