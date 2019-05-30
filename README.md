@@ -40,9 +40,6 @@ It will create new blockchain accoount, save encrypted DataOwner for more detail
 cd ../tests
 python transactions.py
 ``` 
-
-Tu run local endpoint 
-
 ## Install and run own endpoint
 
 ```
@@ -52,11 +49,36 @@ cd web/src
 ./manage.py runserver
 ```
 
-Then test local endpoint
+All dev local endpoints are avaleable now by address
+
+```
+curl http://127.0.0.1:8000/
+```
+## Prometeus roles 
+There are three roles Mart, Validator and Owner in the system. Bellow roles action and tools described.
+
+### DataValidator
+
+Init new Validator just after bringing up dev node and endpoints, 
 
 ```
 curl http://127.0.0.1:8000/create_account/?type=validator
 ```
+
+Method returns structure like 
+
+```json
+{"blockchain_account": {"account": "0x9e2c064cfb29017445ac2a9d61bd2aa1fd2dbbae", 
+                        "identity": "Npo9yyg9Kh2Eb1eog6dwimNRG6Ob9vOmja4KZdFWhs4", 
+                        "private": "0xa060f56f7cd0c2462f0db8f94f38adf320690f5fe9ba9f941888e097aec5f81c",
+                        "balance": 1000000000000000000}, 
+ "system_account": {"login": "login", "password": "password"}}
+```
+where
+
+* *blockchain_account* * - is a new Validator account in a blockcahin
+* *system_account* * - system user and password to login into webservice http://127.0.0.1:8000
+
 
 ## Using Prometeus PoC live endpoint
 
