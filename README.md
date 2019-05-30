@@ -1,6 +1,8 @@
 # Prometeus PoC Quick start
 
-## Install dependencies
+## Install
+
+### Dependencies
 
 ```
 sudo add-apt-repository -y ppa:ethereum/ethereum
@@ -16,7 +18,7 @@ pip install -r requirements.txt
 ```
 
 
-## Init and start dev node with contract
+### Init and start dev node with contract
 
 ```
 cd node
@@ -40,7 +42,7 @@ It will create new blockchain accoount, save encrypted DataOwner for more detail
 cd ../tests
 python transactions.py
 ``` 
-## Install and run own endpoint
+### Install and run own endpoint
 
 ```
 cd web/src
@@ -54,6 +56,11 @@ All dev local endpoints are avaleable now by address
 ```
 curl http://127.0.0.1:8000/
 ```
+
+### IPFS
+TODO
+
+
 ## Prometeus roles 
 There are three roles Mart, Validator and Owner in the system. Bellow roles action and tools described.
 
