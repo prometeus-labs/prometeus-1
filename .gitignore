@@ -2,7 +2,7 @@
 /chaindata
 /ipfs_data
 /storage
-
+/sqllite
 # Python
 __pycache__/
 *.py[cod]
