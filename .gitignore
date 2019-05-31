@@ -2,7 +2,6 @@
 /chaindata
 /ipfs_data
 /storage
-
 # Python
 __pycache__/
 *.py[cod]
