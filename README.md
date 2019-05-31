@@ -1,6 +1,6 @@
 # Prometeus PoC Quick start
 
-Find full system description on the project [wiki](https://github.com/prometeus-labs/prometeus/wiki) page
+Find full system description on the project [wiki](https://github.com/prometeus-labs/prometeus/wiki) page, also read our [whitepaper](https://prometeus.io/whitepaper.pdf)
 
 ## Install PoC
 
