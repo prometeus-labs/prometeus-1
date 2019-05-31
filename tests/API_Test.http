@@ -6,12 +6,12 @@
 # * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
 
 
-### init_data_validator
-GET http://127.0.0.1:4001/init_validator/
+### scanner
+GET http://127.0.0.1:4000/scanner/
 Content-Type: application/json
 
 ### init_data_owner
-POST http://127.0.0.1:4000/init_owner/
+GET http://127.0.0.1:4000/create_account/?type=validator/
 Content-Type: application/json
 
 {
