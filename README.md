@@ -1,6 +1,10 @@
 # Prometeus PoC Quick start
 
-## Install dependencies
+Find full system description on the project [wiki](https://github.com/prometeus-labs/prometeus/wiki) page, also read our [whitepaper](https://prometeus.io/whitepaper.pdf)
+
+## Install PoC
+
+### Dependencies
 
 ```
 sudo add-apt-repository -y ppa:ethereum/ethereum
@@ -16,7 +20,7 @@ pip install -r requirements.txt
 ```
 
 
-## Init and start dev node with contract
+### Init and start dev node with contract
 
 ```
 cd node
@@ -40,10 +44,7 @@ It will create new blockchain accoount, save encrypted DataOwner for more detail
 cd ../tests
 python transactions.py
 ``` 
-
-Tu run local endpoint 
-
-## Install and run own endpoint
+### Install and run own endpoint
 
 ```
 cd web/src
@@ -52,29 +53,28 @@ cd web/src
 ./manage.py runserver
 ```
 
-Then test local endpoint
+All dev local endpoints are avaleable now by address
+
+```
+curl http://127.0.0.1:8000/
+```
+
+### IPFS
+TODO
+
+
+## Prometeus roles 
+There are three roles Mart, Validator and Owner in the system. Bellow roles action and tools described.
+
+### DataValidator
+
+To act as Validator role init new Validator account first just after bringing up dev node and endpoints. You are able to create many Validators as you like by call API method:
 
 ```
 curl http://127.0.0.1:8000/create_account/?type=validator
 ```
 
-## Using Prometeus PoC live endpoint
-
-The system has deployed with local dev geth node and have no any transactions with main blockchain.
-Thera hosts to serve PoC endpoints:
-
-
-*  [https://api.prometeus.io](https://api.prometeus.io) 
-* [ https://storage.prometeus.io]( https://storage.prometeus.io)
-
-First create DataValidator account in PoC enviroment
-
-### Initialize DataValidator endpoint
-
-https://api.prometeus.io/create_account/?type=validator
-
-
-it returns new account related credentials with some coins on balance
+Method returns structure like 
 
 ```json
 {"blockchain_account": {"account": "0x9e2c064cfb29017445ac2a9d61bd2aa1fd2dbbae", 
@@ -83,20 +83,17 @@ it returns new account related credentials with some coins on balance
                         "balance": 1000000000000000000}, 
  "system_account": {"login": "login", "password": "password"}}
 ```
+where params meaning is:
 
-Live demo
+*blockchain_account* - is a new **Validator** account in a blockcahin
+
+*system_account* - system user and password to login into webservice http://127.0.0.1:8000
+
+To initializing data **Owner** call API POST method */init_owner*
 
 ```
-curl https://api.prometeus.io/create_account/?type=validator
-curl https://api.prometeus.io/create_account/?type=mart
+curl -H "Content-Type: application/json" --request POST --data '{"data":"xyzsdfsdfsfdsfdsf", "data_validator":"0xb19542ea90295401ed7558077d582b70f208bfba"}' http://127.0.0.1:8000/init_owner
 ```
-
-### Initialize DataOwner endpoint
-https://api.prometeus.io/init_owner
-
-- creates blokchain account for DataOwner and link it with DataValidator blokchain account
-- map DataValidator->DataOwner is stored in smart contract
-- encrypt DataOwner data set and save file to the store
 
 Params
 
@@ -107,7 +104,20 @@ Params
 }
 ```
 
+where params meaning is:
+
+*data* - **Owner** ralated data to be enctypted
+
+*validator* - is a **Validator** address new created **Owner** will be belonging to
+
+Method will process data with bellow flow
+
+- creates blokchain account for data Owner and link it with Validator blokchain account
+- maps Validator->Owner and store mapping in blockcahin and local DB
+- encrypt data Owner data set and save file to the store
+
 Returns
+
 
 ```json
 {
@@ -120,22 +130,60 @@ Returns
     "md5": "9a6d26641a37729b316df6b21412e73a"
 }
 ```
+where params meaning is:
 
-Live demo
+*blockchain_account* - new Owner blockchain account with all credentials
+
+*storage_url* - encrypted file location
+
+*private_key* - key to decrypt
+
+*md5* - chack summ of encrypted file
+
+*validator* - is a createor for data Owner
+
+
+
+### DataMart
+TODO
+
+
+
+## Using Prometeus PoC live endpoint
+
+The system has deployed with local dev geth node and have no any transactions with main blockchain.
+
+
+
+*  [https://api.prometeus.io](https://api.prometeus.io) 
+* [ https://storage.prometeus.io]( https://storage.prometeus.io)
+* [ https://scanner.prometeus.io]( https://scanner.prometeus.io)
+
+
+### Using API endpoint
+
+[https://api.prometeus.io](https://api.prometeus.io) usage is the same as described in above chapter 'Prometeus roles'.
+It aims to play any roles like Mart, Validator or Owner
+
+Some ideas how to use live dev demo. Create accounts:
+
+```
+curl https://api.prometeus.io/create_account/?type=validator
+curl https://api.prometeus.io/create_account/?type=mart
+```
+Initialize data Owner
 
 ```
 curl -H "Content-Type: application/json" --request POST --data '{"data":"xyzsdfsdfsfdsfdsf", "data_validator":"0xb19542ea90295401ed7558077d582b70f208bfba"}' https://api.prometeus.io/init_owner
 ```
 
-### Scanner
-
-To find relatedt to Prometeus account data 
+To obtain relatedt to Prometeus account data 
 
 ```
 curl http://api.prometeus.io/scanner/?blockchain_address=0x60a7e2a4080c91662f4b85245edce83736797013
 ```
 
-returns json like
+returns json structure like
 
 ```json
 {"blockchain_address": "0x60a7e2a4080c91662f4b85245edce83736797013", 
